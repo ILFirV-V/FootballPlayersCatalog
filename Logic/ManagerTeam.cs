@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using FootballPlayersCatalog.Controllers.Models;
 using FootballPlayersCatalog.Dal.Models;
-using FootballPlayersCatalog.Exceptions;
+using FootballPlayersCatalog.Core.Exceptions;
+using FootballPlayersCatalog.Controllers.Models;
 
 namespace FootballPlayersCatalog.Logic
 {
@@ -17,19 +17,22 @@ namespace FootballPlayersCatalog.Logic
             this.context = context;
         }
 
-        public async Task<Team> GetItemByIdAsync(int id)
+        public async Task<TeamResponse> GetItemByIdAsync(int id)
         {
             var team = await context.Teams.FindAsync(id);
             if (team == null)
             {
                 throw new NotFoundException($"Team with ID {id} not found");
             }
-            return team;
+            var teamResponse = mapper.Map<TeamResponse>(team);
+            return teamResponse;
         }
 
-        public async Task<IEnumerable<Team>> GetAllAsync()
+        public async Task<IEnumerable<TeamResponse>> GetAllAsync()
         {
-            return await context.Teams.ToListAsync();
+            var teams = await context.Teams.ToListAsync();
+            var teamResponses = teams.Select(mapper.Map<TeamResponse>);
+            return teamResponses;
         }
 
         public async Task AddAsync(TeamRequest teamRequest)

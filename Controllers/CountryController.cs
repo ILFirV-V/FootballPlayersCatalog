@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using FootballPlayersCatalog.Controllers.Models;
 using FootballPlayersCatalog.Logic;
+using FootballPlayersCatalog.Controllers.Models;
 
 namespace FootballPlayersCatalog.Controllers
 {

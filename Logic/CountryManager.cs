@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using FootballPlayersCatalog.Controllers.Models;
 using FootballPlayersCatalog.Dal.Models;
-using FootballPlayersCatalog.Exceptions;
+using FootballPlayersCatalog.Controllers.Models;
+using FootballPlayersCatalog.Core.Exceptions;
 
 namespace FootballPlayersCatalog.Logic
 {
@@ -17,22 +17,25 @@ namespace FootballPlayersCatalog.Logic
             this.mapper = mapper;
         }
 
-        public async Task<Country> GetItemByIdAsync(int id)
+        public async Task<CountryResponse> GetItemByIdAsync(int id)
         {
             var country = await context.Countries.FindAsync(id);
             if (country == null)
             {
                 throw new NotFoundException($"Country with ID {id} not found");
             }
-            return country;
+            var сountryResponse = mapper.Map<CountryResponse>(country);
+            return сountryResponse;
         }
 
-        public async Task<IEnumerable<Country>> GetAllAsync()
+        public async Task<IEnumerable<CountryResponse>> GetAllAsync()
         {
-            return await context.Countries.ToListAsync();
+            var countries = await context.Countries.ToListAsync();
+            var countryResponses = countries.Select(mapper.Map<CountryResponse>);
+            return countryResponses;
         }
 
-        public async Task<Country> AddAsync(CountryRequest countryRequest)
+        public async Task<CountryResponse> AddAsync(CountryRequest countryRequest)
         {
             if (countryRequest == null)
             {
@@ -45,7 +48,8 @@ namespace FootballPlayersCatalog.Logic
             }
             await context.Countries.AddAsync(сountry);
             await context.SaveChangesAsync();
-            return сountry;
+            var сountryResponse = mapper.Map<CountryResponse>(сountry);
+            return сountryResponse;
         }
     }
 }

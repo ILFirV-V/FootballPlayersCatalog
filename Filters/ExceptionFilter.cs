@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using FootballPlayersCatalog.Exceptions;
-
+using FootballPlayersCatalog.Core.Exceptions;
 
 namespace FootballPlayersCatalog.Filters
 {

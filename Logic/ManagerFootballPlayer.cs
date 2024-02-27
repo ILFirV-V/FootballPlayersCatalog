@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using FootballPlayersCatalog.Controllers.Models;
 using FootballPlayersCatalog.Dal.Models;
-using FootballPlayersCatalog.Exceptions;
+using FootballPlayersCatalog.Controllers.Models;
+using FootballPlayersCatalog.Core.Exceptions;
 
 namespace FootballPlayersCatalog.Logic
 {
@@ -17,22 +17,31 @@ namespace FootballPlayersCatalog.Logic
             this.context = context;
         }
 
-        public async Task<FootballPlayer> GetItemByIdAsync(int id)
+        public async Task<FootballPlayerResponse> GetItemByIdAsync(int id)
         {
-            var player = await context.FootballPlayers.FindAsync(id);
+            var player = await context.FootballPlayers
+                .Include(u => u.Team)
+                .Include(u => u.Country)
+                .FirstOrDefaultAsync(p => p.Id == id);
             if (player == null)
             {
                 throw new NotFoundException($"Football player with ID {id} not found");
             }
-            return player;
+            var playerResponse = mapper.Map<FootballPlayerResponse>(player);
+            return playerResponse;
         }
 
-        public async Task<IEnumerable<FootballPlayer>> GetAllAsync()
+        public async Task<IEnumerable<FootballPlayerResponse>> GetAllAsync()
         {
-            return await context.FootballPlayers.ToListAsync();
+            var players = await context.FootballPlayers
+                .Include(u => u.Team)
+                .Include(u => u.Country)
+                .ToListAsync();
+            var playerResponse = players.Select(mapper.Map<FootballPlayerResponse>);
+            return playerResponse;
         }
 
-        public async Task<FootballPlayer> AddAsync(FootballPlayerRequest player)
+        public async Task<FootballPlayerResponse> AddAsync(FootballPlayerRequest player)
         {
             if (player == null)
             {
@@ -43,12 +52,13 @@ namespace FootballPlayersCatalog.Logic
             {
                 throw new Exception("Failed to map FootballPlayerRequest to FootballPlayer");
             }
-            await context.FootballPlayers.AddAsync(footballPlayer);
+            var footballPlayerResponse = await context.FootballPlayers.AddAsync(footballPlayer);
             await context.SaveChangesAsync();
-            return footballPlayer;
+            var playerResponse = mapper.Map<FootballPlayerResponse>(footballPlayerResponse);
+            return playerResponse;
         }
 
-        public async Task<FootballPlayer> UpdateUser(int id, FootballPlayerRequest player)
+        public async Task<FootballPlayerResponse> UpdateUser(int id, FootballPlayerRequest player)
         {
             if (player == null)
             {
@@ -60,9 +70,10 @@ namespace FootballPlayersCatalog.Logic
                 throw new Exception("Failed to map FootballPlayerRequest to FootballPlayer");
             }
             footballPlayer = footballPlayer with { Id = id };
-            context.FootballPlayers.Update(footballPlayer);
+            var footballPlayerResponse = context.FootballPlayers.Update(footballPlayer);
             await context.SaveChangesAsync();
-            return footballPlayer;
+            var playerResponse = mapper.Map<FootballPlayerResponse>(footballPlayerResponse);
+            return playerResponse;
         }
 
         public async Task DeleteAsync(int id)

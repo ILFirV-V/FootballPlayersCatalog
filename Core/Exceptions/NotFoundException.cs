@@ -1,4 +1,4 @@
-﻿namespace FootballPlayersCatalog.Exceptions
+﻿namespace FootballPlayersCatalog.Core.Exceptions
 {
     public class NotFoundException : Exception
     {

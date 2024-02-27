@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using FootballPlayersCatalog.Controllers.Models;
 using FootballPlayersCatalog.Logic;
+using FootballPlayersCatalog.Controllers.Models;
 
 namespace FootballPlayersCatalog.Controllers
 {
@@ -50,7 +50,7 @@ namespace FootballPlayersCatalog.Controllers
         public async Task<IActionResult> DeleteUser(int id)
         {
             await managerFootballPlayer.DeleteAsync(id);
-            return Ok();
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
         [HttpPut("{id}")]
