@@ -1,5 +1,5 @@
-﻿using FootballPlayersCatalog.Controllers.Models;
-using FootballPlayersCatalog.Logic;
+﻿using FootballPlayersCatalog.Logic.Interfaces;
+using FootballPlayersCatalog.Models.Requests.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballPlayersCatalog.Controllers
@@ -9,9 +9,9 @@ namespace FootballPlayersCatalog.Controllers
     public class TeamController : ControllerBase
     {
         private readonly ILogger<FootballController> _logger;
-        private readonly ManagerTeam teamManager;
+        private readonly ITeamManager teamManager;
 
-        public TeamController(ILogger<FootballController> logger, ManagerTeam teamManager)
+        public TeamController(ILogger<FootballController> logger, ITeamManager teamManager)
         {
             _logger = logger;
             this.teamManager = teamManager;
@@ -41,7 +41,7 @@ namespace FootballPlayersCatalog.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> PostTeam([FromBody] TeamRequest dto)
+        public async Task<IActionResult> PostTeam([FromBody] ITeamRequest dto)
         {
             await teamManager.AddAsync(dto);
             return Ok();

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using FootballPlayersCatalog.Logic;
-using FootballPlayersCatalog.Controllers.Models;
+using FootballPlayersCatalog.Models.Requests.Interfaces;
+using FootballPlayersCatalog.Logic.Interfaces;
 
 namespace FootballPlayersCatalog.Controllers
 {
@@ -9,9 +9,9 @@ namespace FootballPlayersCatalog.Controllers
     public class CountryController : ControllerBase
     {
         private readonly ILogger<CountryController> _logger;
-        private readonly CountryManager countryManager;
+        private readonly ICountryManager countryManager;
 
-        public CountryController(ILogger<CountryController> logger, CountryManager countryManager)
+        public CountryController(ILogger<CountryController> logger, ICountryManager countryManager)
         {
             _logger = logger;
             this.countryManager = countryManager;
@@ -38,7 +38,7 @@ namespace FootballPlayersCatalog.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> PostUser(CountryRequest dto)
+        public async Task<IActionResult> PostUser(ICountryRequest dto)
         {
             var country = await countryManager.AddAsync(dto);
             return StatusCode(StatusCodes.Status201Created, country);

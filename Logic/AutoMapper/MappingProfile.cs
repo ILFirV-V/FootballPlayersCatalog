@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FootballPlayersCatalog.Controllers.Models;
 using FootballPlayersCatalog.Dal.Models;
+using FootballPlayersCatalog.Models.Requests.Interfaces;
 
 namespace FootballPlayersCatalog.Logic.AutoMapper
 {
@@ -8,9 +9,9 @@ namespace FootballPlayersCatalog.Logic.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<CountryRequest, Country>();
-            CreateMap<FootballPlayerRequest, FootballPlayer>();
-            CreateMap<TeamRequest, Team>();
+            CreateMap<ICountryRequest, Country>();
+            CreateMap<IFootballPlayerRequest, FootballPlayer>();
+            CreateMap<ITeamRequest, Team>();
 
             CreateMap<FootballPlayer, FootballPlayerResponse>()
                 .ForMember(dest => dest.Team, opt => opt.MapFrom(src => src.Team))

@@ -1,23 +1,26 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using FootballPlayersCatalog.Dal.Models;
-using FootballPlayersCatalog.Controllers.Models;
 using FootballPlayersCatalog.Core.Exceptions;
+using FootballPlayersCatalog.Logic.Interfaces;
+using FootballPlayersCatalog.Models.Requests.Interfaces;
+using FootballPlayersCatalog.Models.Responses.Interfaces;
+using FootballPlayersCatalog.Controllers.Models;
 
 namespace FootballPlayersCatalog.Logic
 {
-    public class ManagerFootballPlayer
+    public class PlayerManager : IPlayerManager
     {
         private readonly ApplicationContext context;
         private readonly IMapper mapper;
 
-        public ManagerFootballPlayer(IMapper mapper, ApplicationContext context)
+        public PlayerManager(IMapper mapper, ApplicationContext context)
         {
             this.mapper = mapper;
             this.context = context;
         }
 
-        public async Task<FootballPlayerResponse> GetItemByIdAsync(int id)
+        public async Task<IFootballPlayerResponse> GetItemByIdAsync(int id)
         {
             var player = await context.FootballPlayers
                 .Include(u => u.Team)
@@ -31,7 +34,7 @@ namespace FootballPlayersCatalog.Logic
             return playerResponse;
         }
 
-        public async Task<IEnumerable<FootballPlayerResponse>> GetAllAsync()
+        public async Task<IEnumerable<IFootballPlayerResponse>> GetAllAsync()
         {
             var players = await context.FootballPlayers
                 .Include(u => u.Team)
@@ -41,7 +44,7 @@ namespace FootballPlayersCatalog.Logic
             return playerResponse;
         }
 
-        public async Task<FootballPlayerResponse> AddAsync(FootballPlayerRequest player)
+        public async Task<IFootballPlayerResponse> AddAsync(IFootballPlayerRequest player)
         {
             if (player == null)
             {
@@ -58,7 +61,7 @@ namespace FootballPlayersCatalog.Logic
             return playerResponse;
         }
 
-        public async Task<FootballPlayerResponse> UpdateUser(int id, FootballPlayerRequest player)
+        public async Task<IFootballPlayerResponse> UpdateUser(int id, IFootballPlayerRequest player)
         {
             if (player == null)
             {

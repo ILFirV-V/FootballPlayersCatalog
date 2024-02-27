@@ -1,8 +1,9 @@
 ﻿using FootballPlayersCatalog.Dal.Enums;
+using FootballPlayersCatalog.Models.Requests.Interfaces;
 
 namespace FootballPlayersCatalog.Controllers.Models
 {
-    public class FootballPlayerRequest
+    public class FootballPlayerRequest : IFootballPlayerRequest
     {
         public required string FirstName { get; init; }
         public required string LastName { get; init; }

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using FootballPlayersCatalog.Logic;
-using FootballPlayersCatalog.Controllers.Models;
+using FootballPlayersCatalog.Models.Requests.Interfaces;
+using FootballPlayersCatalog.Logic.Interfaces;
 
 namespace FootballPlayersCatalog.Controllers
 {
@@ -9,9 +9,9 @@ namespace FootballPlayersCatalog.Controllers
     public class FootballController : ControllerBase
     {
         private readonly ILogger<FootballController> _logger;
-        private readonly ManagerFootballPlayer managerFootballPlayer;
+        private readonly IPlayerManager managerFootballPlayer;
 
-        public FootballController(ILogger<FootballController> logger, ManagerFootballPlayer footballerManager)
+        public FootballController(ILogger<FootballController> logger, IPlayerManager footballerManager)
         {
             _logger = logger;
             managerFootballPlayer = footballerManager;
@@ -38,7 +38,7 @@ namespace FootballPlayersCatalog.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> PostUser([FromBody] FootballPlayerRequest dto)
+        public async Task<IActionResult> PostUser([FromBody] IFootballPlayerRequest dto)
         {
             var footballPlayer = await managerFootballPlayer.AddAsync(dto);
             return StatusCode(StatusCodes.Status201Created, footballPlayer);
@@ -56,7 +56,7 @@ namespace FootballPlayersCatalog.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] FootballPlayerRequest dto)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] IFootballPlayerRequest dto)
         {
             var footballPlayer = await managerFootballPlayer.UpdateUser(id, dto);
             return Ok(footballPlayer);

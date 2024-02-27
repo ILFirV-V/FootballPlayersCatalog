@@ -3,10 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using FootballPlayersCatalog.Dal.Models;
 using FootballPlayersCatalog.Controllers.Models;
 using FootballPlayersCatalog.Core.Exceptions;
+using FootballPlayersCatalog.Models.Requests.Models;
+using FootballPlayersCatalog.Logic.Interfaces;
+using FootballPlayersCatalog.Models.Responses.Interfaces;
+using FootballPlayersCatalog.Models.Requests.Interfaces;
 
 namespace FootballPlayersCatalog.Logic
 {
-    public class CountryManager
+    public class CountryManager : ICountryManager
     {
         private readonly ApplicationContext context;
         private readonly IMapper mapper;
@@ -17,7 +21,7 @@ namespace FootballPlayersCatalog.Logic
             this.mapper = mapper;
         }
 
-        public async Task<CountryResponse> GetItemByIdAsync(int id)
+        public async Task<ICountryResponse> GetItemByIdAsync(int id)
         {
             var country = await context.Countries.FindAsync(id);
             if (country == null)
@@ -28,14 +32,14 @@ namespace FootballPlayersCatalog.Logic
             return сountryResponse;
         }
 
-        public async Task<IEnumerable<CountryResponse>> GetAllAsync()
+        public async Task<IEnumerable<ICountryResponse>> GetAllAsync()
         {
             var countries = await context.Countries.ToListAsync();
             var countryResponses = countries.Select(mapper.Map<CountryResponse>);
             return countryResponses;
         }
 
-        public async Task<CountryResponse> AddAsync(CountryRequest countryRequest)
+        public async Task<ICountryResponse> AddAsync(ICountryRequest countryRequest)
         {
             if (countryRequest == null)
             {
@@ -48,7 +52,7 @@ namespace FootballPlayersCatalog.Logic
             }
             await context.Countries.AddAsync(сountry);
             await context.SaveChangesAsync();
-            var сountryResponse = mapper.Map<CountryResponse>(сountry);
+            var сountryResponse = mapper.Map<ICountryResponse>(сountry);
             return сountryResponse;
         }
     }

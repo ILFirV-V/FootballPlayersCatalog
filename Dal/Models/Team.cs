@@ -1,5 +1,4 @@
 ﻿using FootballPlayersCatalog.Core.Dal.Interfaces;
-using FootballPlayersCatalog.Dal.Enums;
 
 namespace FootballPlayersCatalog.Dal.Models
 {
