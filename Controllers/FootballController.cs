@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using FootballPlayersCatalog.Models.Requests.Interfaces;
 using FootballPlayersCatalog.Logic.Interfaces;
+using FootballPlayersCatalog.Controllers.Models;
+using FootballPlayersCatalog.Dal.Models;
 
 namespace FootballPlayersCatalog.Controllers
 {
@@ -38,7 +40,7 @@ namespace FootballPlayersCatalog.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> PostUser([FromBody] IFootballPlayerRequest dto)
+        public async Task<IActionResult> PostUser([FromBody] FootballPlayerRequest dto)
         {
             var footballPlayer = await managerFootballPlayer.AddAsync(dto);
             return StatusCode(StatusCodes.Status201Created, footballPlayer);
@@ -56,7 +58,7 @@ namespace FootballPlayersCatalog.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] IFootballPlayerRequest dto)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] FootballPlayerRequest dto)
         {
             var footballPlayer = await managerFootballPlayer.UpdateUser(id, dto);
             return Ok(footballPlayer);

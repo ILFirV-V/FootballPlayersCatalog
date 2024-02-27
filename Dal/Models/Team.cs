@@ -6,6 +6,6 @@ namespace FootballPlayersCatalog.Dal.Models
     {
         public int Id { get; init; }
         public required string Name { get; init; }
-        public IList<FootballPlayer> FootballPlayers { get; init; }
+        public required IList<FootballPlayer> FootballPlayers { get; init; }
     }
 }

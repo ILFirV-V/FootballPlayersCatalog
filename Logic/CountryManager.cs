@@ -35,6 +35,10 @@ namespace FootballPlayersCatalog.Logic
         public async Task<IEnumerable<ICountryResponse>> GetAllAsync()
         {
             var countries = await context.Countries.ToListAsync();
+            if (countries is null)
+            {
+                throw new NotFoundException($"Countries not found");
+            }
             var countryResponses = countries.Select(mapper.Map<CountryResponse>);
             return countryResponses;
         }
@@ -50,9 +54,13 @@ namespace FootballPlayersCatalog.Logic
             {
                 throw new Exception("Failed to map CountryRequest to Country");
             }
-            await context.Countries.AddAsync(сountry);
+            var addCountry = await context.Countries.AddAsync(сountry);
+            if (addCountry is null)
+            {
+                throw new NotFoundException($"Add country not found");
+            }
             await context.SaveChangesAsync();
-            var сountryResponse = mapper.Map<ICountryResponse>(сountry);
+            var сountryResponse = mapper.Map<CountryResponse>(addCountry.Entity);
             return сountryResponse;
         }
     }

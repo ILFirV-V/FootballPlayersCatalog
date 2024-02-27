@@ -6,6 +6,7 @@ using FootballPlayersCatalog.Logic.Interfaces;
 using FootballPlayersCatalog.Models.Requests.Interfaces;
 using FootballPlayersCatalog.Models.Responses.Interfaces;
 using FootballPlayersCatalog.Controllers.Models;
+using System.Numerics;
 
 namespace FootballPlayersCatalog.Logic
 {
@@ -41,6 +42,10 @@ namespace FootballPlayersCatalog.Logic
                 .Include(u => u.Country)
                 .ToListAsync();
             var playerResponse = players.Select(mapper.Map<FootballPlayerResponse>);
+            if (playerResponse == null)
+            {
+                throw new NotFoundException($"Football players not found");
+            }
             return playerResponse;
         }
 
@@ -55,9 +60,13 @@ namespace FootballPlayersCatalog.Logic
             {
                 throw new Exception("Failed to map FootballPlayerRequest to FootballPlayer");
             }
-            var footballPlayerResponse = await context.FootballPlayers.AddAsync(footballPlayer);
+            var addPlayer = await context.FootballPlayers.AddAsync(footballPlayer);
+            if (addPlayer == null)
+            {
+                throw new NotFoundException($"Football player not found");
+            }
             await context.SaveChangesAsync();
-            var playerResponse = mapper.Map<FootballPlayerResponse>(footballPlayerResponse);
+            var playerResponse = mapper.Map<FootballPlayerResponse>(addPlayer.Entity);
             return playerResponse;
         }
 
@@ -73,9 +82,13 @@ namespace FootballPlayersCatalog.Logic
                 throw new Exception("Failed to map FootballPlayerRequest to FootballPlayer");
             }
             footballPlayer = footballPlayer with { Id = id };
-            var footballPlayerResponse = context.FootballPlayers.Update(footballPlayer);
+            var updatePlayer = context.FootballPlayers.Update(footballPlayer);
+            if (updatePlayer == null)
+            {
+                throw new NotFoundException($"Football player not found");
+            }
             await context.SaveChangesAsync();
-            var playerResponse = mapper.Map<FootballPlayerResponse>(footballPlayerResponse);
+            var playerResponse = mapper.Map<FootballPlayerResponse>(updatePlayer.Entity);
             return playerResponse;
         }
 

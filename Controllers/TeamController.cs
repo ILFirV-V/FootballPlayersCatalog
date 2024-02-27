@@ -1,5 +1,7 @@
-﻿using FootballPlayersCatalog.Logic.Interfaces;
+﻿using FootballPlayersCatalog.Dal.Models;
+using FootballPlayersCatalog.Logic.Interfaces;
 using FootballPlayersCatalog.Models.Requests.Interfaces;
+using FootballPlayersCatalog.Models.Requests.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballPlayersCatalog.Controllers
@@ -21,30 +23,26 @@ namespace FootballPlayersCatalog.Controllers
         public async Task<IActionResult> GetTeamById(int id)
         {
             var team = await teamManager.GetItemByIdAsync(id);
-            if (team is null)
-            {
-                return NotFound();
-            }
             return Ok(team);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetTeams()
         {
-            var footballPlayers = await teamManager.GetAllAsync();
-            if (footballPlayers is null)
+            var teams = await teamManager.GetAllAsync();
+            if (teams is null)
             {
                 return NotFound();
             }
-            return Ok(footballPlayers);
+            return Ok(teams);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> PostTeam([FromBody] ITeamRequest dto)
+        public async Task<IActionResult> PostTeam([FromBody] TeamRequest dto)
         {
-            await teamManager.AddAsync(dto);
-            return Ok();
+            var team = await teamManager.AddAsync(dto);
+            return Ok(team);
         }
     }
 }

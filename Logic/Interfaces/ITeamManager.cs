@@ -7,6 +7,6 @@ namespace FootballPlayersCatalog.Logic.Interfaces
     {
         Task<ITeamResponse> GetItemByIdAsync(int id);
         Task<IEnumerable<ITeamResponse>> GetAllAsync();
-        Task AddAsync(ITeamRequest teamRequest);
+        Task<ITeamResponse> AddAsync(ITeamRequest teamRequest);
     }
 }
