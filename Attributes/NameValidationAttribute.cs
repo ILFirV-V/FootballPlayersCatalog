@@ -13,7 +13,7 @@ namespace FootballPlayersCatalog.Attributes
                 {
                     foreach (var c in name)
                     {
-                        if (!char.IsLetter(c))
+                        if (char.IsNumber(c))
                         {
                             return new ValidationResult("Name should contain only letters.");
                         }

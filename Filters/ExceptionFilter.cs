@@ -21,10 +21,6 @@ namespace FootballPlayersCatalog.Filters
             {
                 context.Result = new BadRequestObjectResult(new { error = "Error in db" });
             }
-            else if (context.Exception is Exception)
-            {
-                context.Result = new StatusCodeResult(500);
-            }
             context.ExceptionHandled = true;
         }
     }
