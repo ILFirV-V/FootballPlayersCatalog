@@ -23,11 +23,9 @@ namespace FootballPlayersCatalog.Controllers.Models
         [Required(ErrorMessage = "Дата рождения обязательна для заполнения")]
         public DateOnly Birthday { get; init; }
 
-        [NumericOnly]
         [Required(ErrorMessage = "Идентификатор команды обязателен для заполнения")]
         public int TeamId { get; init; }
 
-        [NumericOnly]
         [Required(ErrorMessage = "Идентификатор страны обязателен для заполнения")]
         public int CountryId { get; init; }
     }

@@ -49,15 +49,7 @@ namespace FootballPlayersCatalog.Logic
                 throw new ArgumentNullException(nameof(teamRequest), "TeamRequest cannot be null");
             }
             var team = mapper.Map<Team>(teamRequest);
-            if (team == null)
-            {
-                throw new Exception("Failed to map teamRequest to team");
-            }
             var addTeam = await context.Teams.AddAsync(team);
-            if (addTeam is null)
-            {
-                throw new NotFoundException($"add team not found");
-            }
             await context.SaveChangesAsync();
             var teamResponse = mapper.Map<TeamResponse>(addTeam.Entity);
             return teamResponse;

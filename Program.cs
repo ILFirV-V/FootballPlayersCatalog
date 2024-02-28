@@ -2,6 +2,7 @@ using FootballPlayersCatalog.Filters;
 using FootballPlayersCatalog.Logic.AutoMapper;
 using FootballPlayersCatalog.Logic;
 using FootballPlayersCatalog.Logic.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +13,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddTransient<ITeamManager, TeamManager>();
-builder.Services.AddTransient<IPlayerManager, PlayerManager>();
-builder.Services.AddTransient<ICountryManager, CountryManager>();
+builder.Services.AddScoped<ITeamManager, TeamManager>();
+builder.Services.AddScoped<IPlayerManager, PlayerManager>();
+builder.Services.AddScoped<ICountryManager, CountryManager>();
 
-builder.Services.AddTransient<ApplicationContext>();
+builder.Services.AddDbContext<ApplicationContext>();
 builder.Services.AddControllers(x =>
 {
 

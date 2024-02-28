@@ -50,15 +50,7 @@ namespace FootballPlayersCatalog.Logic
                 throw new ArgumentNullException(nameof(countryRequest), "Football player request cannot be null");
             }
             var сountry = mapper.Map<Country>(countryRequest);
-            if (сountry == null)
-            {
-                throw new Exception("Failed to map CountryRequest to Country");
-            }
             var addCountry = await context.Countries.AddAsync(сountry);
-            if (addCountry is null)
-            {
-                throw new NotFoundException($"Add country not found");
-            }
             await context.SaveChangesAsync();
             var сountryResponse = mapper.Map<CountryResponse>(addCountry.Entity);
             return сountryResponse;

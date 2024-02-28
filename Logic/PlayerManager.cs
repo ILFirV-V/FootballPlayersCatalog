@@ -6,7 +6,6 @@ using FootballPlayersCatalog.Logic.Interfaces;
 using FootballPlayersCatalog.Models.Requests.Interfaces;
 using FootballPlayersCatalog.Models.Responses.Interfaces;
 using FootballPlayersCatalog.Controllers.Models;
-using System.Numerics;
 
 namespace FootballPlayersCatalog.Logic
 {
@@ -56,15 +55,7 @@ namespace FootballPlayersCatalog.Logic
                 throw new ArgumentNullException(nameof(player), "Football player request cannot be null");
             }
             var footballPlayer = mapper.Map<FootballPlayer>(player);
-            if (footballPlayer == null)
-            {
-                throw new Exception("Failed to map FootballPlayerRequest to FootballPlayer");
-            }
             var addPlayer = await context.FootballPlayers.AddAsync(footballPlayer);
-            if (addPlayer == null)
-            {
-                throw new NotFoundException($"Football player not found");
-            }
             await context.SaveChangesAsync();
             var playerResponse = mapper.Map<FootballPlayerResponse>(addPlayer.Entity);
             return playerResponse;
@@ -77,16 +68,8 @@ namespace FootballPlayersCatalog.Logic
                 throw new ArgumentNullException(nameof(player), "Football player request cannot be null");
             }
             var footballPlayer = mapper.Map<FootballPlayer>(player);
-            if (footballPlayer == null)
-            {
-                throw new Exception("Failed to map FootballPlayerRequest to FootballPlayer");
-            }
             footballPlayer = footballPlayer with { Id = id };
             var updatePlayer = context.FootballPlayers.Update(footballPlayer);
-            if (updatePlayer == null)
-            {
-                throw new NotFoundException($"Football player not found");
-            }
             await context.SaveChangesAsync();
             var playerResponse = mapper.Map<FootballPlayerResponse>(updatePlayer.Entity);
             return playerResponse;
