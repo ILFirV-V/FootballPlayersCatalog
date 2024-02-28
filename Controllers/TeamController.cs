@@ -20,6 +20,8 @@ namespace FootballPlayersCatalog.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetTeamById(int id)
         {
             var team = await teamManager.GetItemByIdAsync(id);
@@ -27,6 +29,8 @@ namespace FootballPlayersCatalog.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetTeams()
         {
             var teams = await teamManager.GetAllAsync();
@@ -38,7 +42,9 @@ namespace FootballPlayersCatalog.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("add")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> PostTeam([FromBody] TeamRequest dto)
         {
             var team = await teamManager.AddAsync(dto);

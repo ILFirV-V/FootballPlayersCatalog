@@ -37,7 +37,7 @@ namespace FootballPlayersCatalog.Controllers
             return Ok(footballPlayers);
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> PostUser(CountryRequest dto)

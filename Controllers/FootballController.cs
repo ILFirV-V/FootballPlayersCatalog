@@ -37,7 +37,7 @@ namespace FootballPlayersCatalog.Controllers
             return Ok(footballPlayers);
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> PostUser([FromBody] FootballPlayerRequest dto)
@@ -46,7 +46,7 @@ namespace FootballPlayersCatalog.Controllers
             return StatusCode(StatusCodes.Status201Created, footballPlayer);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteUser(int id)
@@ -55,7 +55,7 @@ namespace FootballPlayersCatalog.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("change/{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] FootballPlayerRequest dto)
